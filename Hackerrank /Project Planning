@@ -1,0 +1,18 @@
+With
+CTE1 as (
+select Start_Date from Projects
+where Start_Date not in (SELECT End_date FROM projects)
+),
+CTE2 as (
+select End_Date from Projects
+where End_Date not in (SELECT start_date FROM projects)
+),
+CTE3 as(
+Select CTE1.Start_date,  CTE2.End_Date 
+from CTE1,CTE2
+)
+select Start_Date,min(End_Date)
+from CTE3
+where Start_Date < End_Date
+Group by Start_Date
+ORDER BY datediff(day, start_date,MIN(end_date) ),start_date;
